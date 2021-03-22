@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## PHP Database Connection Class
 
 You can use the [editor on GitHub](https://github.com/EXSAE-Technologies/php-database-connection-class/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
