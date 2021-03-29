@@ -5,7 +5,7 @@ class Db{
 	public $servername = "localhost";
 	public $username = "root";
 	public $password = "";
-	public $dbname = "tms";
+	public $dbname = "exsae_chat";
 	public $conn;
 	public $error;
 
@@ -19,25 +19,42 @@ class Db{
 	function get_item_by_id($table_name, $item_id){
 		$sql = "SELECT * FROM ".$table_name." WHERE id=".$item_id;
 		$result = $this->conn->query($sql);
-		$data = $result->fetch_assoc();
-		return $data;
+		if ($result){
+			$data = $result->fetch_assoc();
+			return $data;
+		} else {
+			$this->error = $this->conn->error;
+			return FALSE;
+		}
 	}
 
 	function get_all_items($table_name){
 		$sql = "SELECT * FROM ".$table_name;
 		$result = $this->conn->query($sql);
-		$data = $result->fetch_all();
+		if($result){
+			$data = $result->fetch_all();
+			$r = array();
+			foreach($data as $datum){
+				array_push($r, $this->get_item_by_id($table_name, $datum[0]));
+			}
+			return $r;
+		} else {
+			$this->error = $this->conn->error;
+			return FALSE;
+		}
+	}
+
+	function get_all(){
+		$data = $this->get_all_items($this->table_name);
 		return $data;
 	}
 
-	function post_item($table_name, $fields = [], $values = []){
+	function post_item($table_name, $data){
 		$sql = "INSERT INTO ".$table_name." (id";
-		for ($i=0; $i < count($fields); $i++) { 
-			$sql .= ",".$fields[$i];
-		}
-		$sql .= ") VALUES ('0'";
-		for ($i=0; $i < count($values); $i++) { 
-			$sql .= ",'".$values[$i]."'";
+		$sql2 = ") VALUES ('0'";
+		foreach($data as $key=>$value){
+			$sql .= ",".$key;
+			$sql2 .= ",'".$value."'";
 		}
 		$sql .= ");";
 		$result = $this->conn->query($sql);
@@ -47,14 +64,16 @@ class Db{
 		return $result;
 	}
 
-	function update_item_by_id($table_name, $id, $fields = [], $values = []){
+	function update_item_by_id($table_name, $id, $data){
 		$sql = "UPDATE ".$table_name." SET ";
-		for ($i=0; $i < count($fields); $i++) { 
+		$i = 0;
+		foreach($data as $key=>$value){
 			if ($i == 0){
-				$sql .= $fields[$i]."='".$values[$i]."'";
+				$sql .= $key."='".$value."'";
 			} else {
-				$sql .= ", ".$fields[$i]."='".$values[$i]."'";
+				$sql .= ", ".$key."='".$value."'";
 			}
+			$i++;
 		}
 		$sql .= " WHERE id=$id;";
 		$result = $this->conn->query($sql);
@@ -73,3 +92,5 @@ class Db{
 	}
 
 }
+
+?>
