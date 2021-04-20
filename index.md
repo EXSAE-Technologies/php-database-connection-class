@@ -1,11 +1,17 @@
 ## PHP Database Connection Class
 
-### Markdown
+The class contains methods for basic queries to a MySQL database. 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Using the Database Connection Class
+You can create classes that inherit from this class, these classes should represent the database tables in your database.
+
+### How to use it
+- Download the 
+- First create a class representing a table name in your database.
+- Let the class inherit from the Db class in the php-
 
 ```markdown
-print("Hello World");
+class MyClass extends Db{
+  #code...
+}
 ```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
