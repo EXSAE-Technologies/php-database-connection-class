@@ -36,3 +36,52 @@ The example below selects all users in the database.
 $user = new User();
 $all_users = $user->get_all();
 ```
+Here is how you can post data into the database
+```markdown
+$user = new User();
+if(!$user->post_item(["username"=>"sampleuser", "email"=>"sampleuser@webmail.com", "password"=>"123456"])){
+	die("Failed: ".$user->error);
+} else {
+	echo "User created successfully!";
+}
+```
+## Function and Variable reference
+```markdown
+require_once "database-connection.php";
+
+class User extends Db{
+	function __init__(){
+		$this->table = "user"; #table name
+		$this->fields = ["username"=>"", "email"=>"", "password"=>""]; #table fields
+	}
+	#more properties and methods...
+}
+```
+
+### get_all()
+This method takes no and it returns an array of all data in the table data, .
+```markdown
+$obj = new User();
+$obj->get_all(); #returns false if theres an error.
+```
+
+### get()
+This method takes one argument which is the id and it returns an associative array of data, it collects only one row.
+```markdown
+$obj = new User();
+$obj->get(2); #returns false if theres an error.
+```
+
+### post_item()
+This method takes one argument which is an associative array of data where the key is the column name in the database and value is that data to insert.
+```markdown
+$obj = new User();
+$obj->post_item(["username"=>"sampleuser", "email"=>"sampleuser@webmail.com", "password"=>"123456"]); #returns false if theres an error.
+```
+
+### update_item_by_id()
+This method takes two arguments, the id of the row to update and an associative array of data where the key is the column name in the database and value is that data to insert.
+```markdown
+$obj = new User();
+$obj->update_item_by_id(1, ["username"=>"sampleuser", "email"=>"sampleuser@webmail.com", "password"=>"123456"]); #returns false if theres an error.
+```
