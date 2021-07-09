@@ -5,7 +5,7 @@ abstract class Db{
 	public $servername = "localhost";
 	public $username = "root";
 	public $password = "";
-	public $dbname = "mumarket";
+	public $dbname = "homeexhibit";
 	public $conn;
 	public $error;
 	public $table;
@@ -105,9 +105,16 @@ abstract class Db{
 	}
 
 	function update_item_by_id($id, $data){
+		$fields = $this->fields;
+		foreach($data as $key => $value){
+			if(array_key_exists($key, $fields)){
+				$fields[$key] = $value;
+			}
+		}
+
 		$sql = "UPDATE ".$this->table." SET ";
 		$i = 0;
-		foreach($data as $key=>$value){
+		foreach($fields as $key=>$value){
 			if ($i == 0){
 				$sql .= $key."='".$value."'";
 			} else {
